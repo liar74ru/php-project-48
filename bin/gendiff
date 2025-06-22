@@ -1,0 +1,29 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use Docopt\Handler;
+
+$doc = <<<DOC
+gendiff -h
+
+Generate diff
+
+Usage:
+  gendiff (-h|--help)
+  gendiff (-v|--version)
+
+Options:
+  -h --help                     Show this screen
+  -v --version                  Show version
+DOC;
+
+$handler = new Handler();
+$response = $handler->handle($doc);
+
+// Если пользователь запросил help или version
+if ($response['--help'] || $response['--version']) {
+    echo $doc;
+    exit;
+}

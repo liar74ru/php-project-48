@@ -1,0 +1,28 @@
+{
+    "name": "hexlet/code",
+    "bin": [
+        "bin/gendiff"
+    ],
+    "description": "hexlet php-package",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Hexlet\\Code\\": "src/"
+        }
+    },
+    "scripts": {
+        "gendiff": "php bin/gendiff"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "authors": [
+        {
+            "name": "Vladimir Kipriyanov",
+            "email": "liar2707@gmail.com"
+        }
+    ],
+    "require-dev": {
+        "docopt/docopt": "^1.0"
+    }
+}

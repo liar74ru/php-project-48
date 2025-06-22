@@ -10,12 +10,6 @@
             "Hexlet\\Code\\": "src/"
         }
     },
-    "scripts": {
-        "gendiff": "php bin/gendiff"
-    },
-    "config": {
-        "bin-dir": "bin"
-    },
     "authors": [
         {
             "name": "Vladimir Kipriyanov",

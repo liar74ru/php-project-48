@@ -4,6 +4,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Docopt\Handler;
+use Php\Package\FileParser;
 
 $doc = <<<DOC
 Generate diff
@@ -22,8 +23,18 @@ DOC;
 $handler = new Handler();
 $response = $handler->handle($doc);
 
+
 // Если пользователь запросил help или version
 if ($response['--help'] || $response['--version']) {
     echo $doc;
     exit;
+}
+// Если пользователь не указал оба файла
+if (!empty($response['<firstFile>']) && !empty($response['<secondFile>'])) {
+    $firstFile = new FileParser($response['<firstFile>']);
+    $secondFile = new FileParser($response['<secondFile>']);
+    $firstFile->showParserResult();
+    $secondFile->showParserResult();
+} else {
+    echo "Please provide two file paths.\n";
 }

@@ -16,6 +16,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # Шаг 2: Настраиваем PHP
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          coverage: xdebug  # Или pcov
+          tools: composer:v2
+
       # Шаг 3: Устанавливаем зависимости
       - name: Install dependencies
         run: make install

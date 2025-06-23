@@ -6,10 +6,6 @@ function parseJson(string $filePath): array
 {
     $fileContent = file_get_contents($filePath);
 
-    if ($fileContent === false) {
-        throw new \Exception("Could not read file: " . $filePath);
-    }
-
     $parsedData = json_decode($fileContent, true);
 
     return $parsedData;
@@ -40,7 +36,7 @@ function diff(array $firstData, array $secondData): array
     return $diff;
 }
 
-function genDiff($firstFile, $secondFile): void
+function genDiff($firstFile, $secondFile): string
 {
     if (!file_exists($firstFile) || !file_exists($secondFile)) {
         throw new \Exception("File not found: " . $firstFile . " or " . $secondFile);
@@ -51,8 +47,8 @@ function genDiff($firstFile, $secondFile): void
         if (is_bool($value)) {
             $value = $value ? 'true' : 'false';
         }
-        $result .= "    $key: $value\n";
+        $result .= "  $key: $value\n";
     }
     $result .= "}\n";
-    echo $result;
+    return $result;
 }

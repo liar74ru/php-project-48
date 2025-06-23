@@ -1,0 +1,38 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test-and-lint:
+    name: "PHP Lint, Test & SonarQube"
+    runs-on: ubuntu-latest
+
+    steps:
+      # Шаг 1: Загружаем репозиторий
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # Шаг 3: Устанавливаем зависимости
+      - name: Install dependencies
+        run: make install
+
+      # Шаг 4: Запускаем линтер (make lint)
+      - name: Run Linter
+        run: make lint
+
+      # Шаг 5: Запускаем тесты (например, PHPUnit)
+      - name: Run Tests
+        run: make test
+
+      # Шаг 6: Отправляем результаты тестов в SonarQube
+      - name: SonarQube Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        with:
+          projectBaseDir: .
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}

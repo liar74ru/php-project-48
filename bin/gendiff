@@ -31,7 +31,7 @@ if ($response['--help'] || $response['--version']) {
 }
 // Если пользователь не указал оба файла
 if (!empty($response['<firstFile>']) && !empty($response['<secondFile>'])) {
-    genDiff($response['<firstFile>'], $response['<secondFile>']);
+    echo genDiff($response['<firstFile>'], $response['<secondFile>']);
 } else {
     echo "Please provide two file paths.\n";
 }

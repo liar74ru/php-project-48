@@ -1,7 +1,7 @@
 # Makefile
 install: # установить зависимости
 	composer install
-
+	chmod +x bin/gendiff
 validate: # проверить код на ошибки
 	composer validate
 
@@ -17,4 +17,4 @@ lint-fix: # исправление ошибок в коде
 gendiff: # установить gendiff
 	sudo ln -s "$(pwd)/bin/gendiff" /usr/local/bin/gendiff
 
-chmod +x bin/gendiff
+

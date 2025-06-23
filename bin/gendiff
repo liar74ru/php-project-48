@@ -4,7 +4,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Docopt\Handler;
-use function Php\Package\showParserResult;
+use function Php\Package\genDiff;
 
 $doc = <<<DOC
 Generate diff
@@ -31,8 +31,7 @@ if ($response['--help'] || $response['--version']) {
 }
 // Если пользователь не указал оба файла
 if (!empty($response['<firstFile>']) && !empty($response['<secondFile>'])) {
-    showParserResult($response['<firstFile>']);
-    showParserResult($response['<secondFile>']);
+    genDiff($response['<firstFile>'], $response['<secondFile>']);
 } else {
     echo "Please provide two file paths.\n";
 }

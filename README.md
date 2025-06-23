@@ -15,6 +15,7 @@
     cd php-project-48
 3.  Установите зависимости с помощью Composer:
     make install
-```
-### Демонстрация после 4 шага
+
+## Демонстрация после 4 шага
+
 [![asciicast](https://asciinema.org/a/iBiPVHLDxXnUNdbyShAxkR48j.svg)](https://asciinema.org/a/iBiPVHLDxXnUNdbyShAxkR48j)

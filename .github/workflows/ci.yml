@@ -44,7 +44,7 @@ jobs:
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         with:
           args: >
-            -Dsonar.projectKey=liar74_php-project-48
+            -Dsonar.projectKey=liar74ru_php-project-48
             -Dsonar.organization=liar74ru
             -Dsonar.projectName=php-project-48
             -Dsonar.php.coverage.reportPaths=coverage.xml

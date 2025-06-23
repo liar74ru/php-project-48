@@ -2,22 +2,9 @@
 
 namespace Php\Package;
 
-class FileParser
-{
-    private $filePath;
-    
-    public function __construct($filePath)
+function parse($filePath): array
     {
-        if (!file_exists($filePath)) {
-            throw new \Exception("File not found: " . $filePath);
-        }
-        $this->filePath = $filePath;
-    }
-
-    public function parse()
-    {
-    
-        $fileContent = file_get_contents($this->filePath);
+        $fileContent = file_get_contents($filePath);
 
         if ($fileContent === false) {
             throw new \Exception("Could not read file: " . $this->filePath);
@@ -28,8 +15,10 @@ class FileParser
         return $parsedData;
     }
 
-     public function showParserResult(): void
+function showParserResult($filePath): void
     {
-        print_r($this->parse());
+        if (!file_exists($filePath)) {
+            throw new \Exception("File not found: " . $filePath);
+        }
+        print_r(parse($filePath));
     }
-}

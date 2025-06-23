@@ -6,6 +6,9 @@
     "description": "hexlet php-package",
     "license": "MIT",
     "autoload": {
+        "files": [
+            "src/FileParser.php"
+        ],
         "psr-4": {
             "Php\\Package\\": "src/"
         }

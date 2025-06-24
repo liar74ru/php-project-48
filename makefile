@@ -20,3 +20,6 @@ gendiff: # установить gendiff
 
 test: # запуск тестов
 	vendor/bin/phpunit --coverage-html coverage-report
+
+test-xml: # запуск тестов с отчетом в формате XML
+	vendor/bin/phpunit --coverage-clover clover.xml

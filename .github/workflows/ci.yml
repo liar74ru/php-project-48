@@ -33,9 +33,12 @@ jobs:
         run: make lint
 
       # Шаг 5: Запускаем тесты (например, PHPUnit)
-      - name: Run Tests
+      - name: Run Tests html
         run: make test
 
+      - name: Run Tests xml
+        run: make test-xml
+        
       # Шаг 6: Отправляем результаты тестов в SonarQube
       - name: SonarQube Scan
         uses: SonarSource/sonarcloud-github-action@master

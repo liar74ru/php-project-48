@@ -1,4 +1,4 @@
-name: PHP CI with SonarQube
+name: PHP SonarQube Analysis
 
 on:
   push:
@@ -17,31 +17,36 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Setup PHP
+      - name: Setup PHP with PCOV
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
           coverage: pcov
           tools: composer
-          ini-values: memory_limit=-1
+          ini-values: |
+            memory_limit=-1
+            pcov.enabled=1
+            pcov.directory=src
 
       - name: Install dependencies
         run: |
-          composer install --prefer-dist --no-progress
+          composer install --prefer-dist --no-progress --optimize-autoloader
           composer dump-autoload --optimize
 
-      - name: Run tests with coverage
-        run: vendor/bin/phpunit --coverage-clover=coverage.xml
-
-      - name: Verify coverage file
+      - name: Run PHPUnit tests with coverage
         run: |
-          if [ ! -f "coverage.xml" ]; then
-            echo "::error::Coverage file not found!"
-            exit 1
-          fi
+          vendor/bin/phpunit --coverage-clover=coverage.xml --log-junit=junit.xml
+          [ -f "coverage.xml" ] || (echo "Coverage file not generated!" && exit 1)
 
-      - name: Run SonarQube Scan (PHP optimized)
-        uses: SonarSource/sonarqube-scan-action@v1
+      - name: Setup Java 17 explicitly
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: Run SonarScanner with forced PHP config
+        uses: sonarsource/sonarqube-scan-action@v1
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
@@ -49,12 +54,16 @@ jobs:
           args: >
             -Dsonar.projectKey=liar74ru_php-project-48
             -Dsonar.projectName=php-project-48
-            -Dsonar.language=php
             -Dsonar.sources=src
             -Dsonar.tests=tests
-            -Dsonar.php.coverage.reportPaths=coverage.xml
             -Dsonar.sourceEncoding=UTF-8
+            -Dsonar.php.coverage.reportPaths=coverage.xml
+            -Dsonar.php.tests.reportPath=junit.xml
+            -Dsonar.language=php
             -Dsonar.exclusions=**/vendor/**,**/cache/**,**/logs/**
+            -Dsonar.cpd.exclusions=**/vendor/**
             -Dsonar.qualitygate.wait=true
             -Dsonar.verbose=true
+            -Dsonar.scm.provider=git
             -Dsonar.scm.disabled=false
+            -X

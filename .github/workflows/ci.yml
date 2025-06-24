@@ -39,6 +39,12 @@ jobs:
       - name: Run Tests xml
         run: make test-xml
 
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
       # Шаг 6: Отправляем результаты тестов в SonarQube
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v1
@@ -55,5 +61,4 @@ jobs:
             -Dsonar.sources=src
             -Dsonar.tests=tests
             -Dsonar.qualitygate.wait=true
-            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
             -Dsonar.verbose=true

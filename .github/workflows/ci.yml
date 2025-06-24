@@ -46,7 +46,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: 'maven'
+          
 
       # Шаг 6: Отправляем результаты тестов в SonarQube
       - name: SonarQube Scan
@@ -61,7 +61,6 @@ jobs:
             -Dsonar.php.coverage.reportPaths=coverage.xml
             -Dsonar.sources=src
             -Dsonar.tests=tests
-            -Dsonar.java.binaries=.
             -Dsonar.sourceEncoding=UTF-8
             -Dsonar.qualitygate.wait=true
             -Dsonar.scm.provider=git

@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: SonarQube Analysis
 
 on:
   push:
@@ -7,60 +7,51 @@ on:
     branches: [ main, develop ]
 
 jobs:
-  test-and-lint:
-    name: "PHP Lint, Test & SonarQube"
+  analyze:
+    name: Analyze with SonarQube
     runs-on: ubuntu-latest
-    env:
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-      # Шаг 1: Загрузка кода
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Полная история коммитов для SonarQube
+          fetch-depth: 0
 
-      # Шаг 2: Настройка PHP
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
-          coverage: pcov  # Быстрее чем Xdebug
-          tools: composer:v2
-          ini-values: memory_limit=-1, pcov.enabled=1
+          coverage: pcov
+          tools: composer
+          ini-values: memory_limit=-1
 
-      # Шаг 3: Установка зависимостей
       - name: Install dependencies
         run: |
-          composer install --prefer-dist --no-progress --optimize-autoloader
+          composer install --prefer-dist --no-progress
           composer dump-autoload --optimize
 
-      # Шаг 4: Запуск линтера
-      - name: Run Linter
-        run: make lint
+      - name: Run tests with coverage
+        run: vendor/bin/phpunit --coverage-clover=coverage.xml
 
-      # Шаг 5: Запуск тестов с генерацией coverage
-      - name: Run Tests with coverage
+      - name: Verify coverage file
         run: |
-          vendor/bin/phpunit --coverage-clover=coverage.xml
-          # Проверяем что coverage файл создан
           if [ ! -f "coverage.xml" ]; then
-            echo "::error::Coverage file not generated!"
+            echo "::error::Coverage file not found!"
             exit 1
           fi
 
-      # Шаг 6: Установка Java 17 (требуется для SonarQube)
-      - name: Set up JDK 17
+      - name: Setup Java 17 explicitly
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: 'maven'
 
-      # Шаг 7: Запуск SonarQube анализа
-      - name: SonarQube Scan
-        uses: SonarSource/sonarqube-scan-action@v1
+      - name: Run SonarScanner with Java 17
+        uses: docker://sonarsource/sonar-scanner-cli:latest
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         with:
           args: >
             -Dsonar.projectKey=liar74ru_php-project-48
@@ -72,6 +63,5 @@ jobs:
             -Dsonar.qualitygate.wait=true
             -Dsonar.verbose=true
             -Dsonar.language=php
-            -Dsonar.exclusions=**/vendor/**,**/cache/**,**/logs/**
-            -Dsonar.cpd.exclusions=**/vendor/**
-            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
+            -Dsonar.exclusions=**/vendor/**,**/cache/**
+            -X

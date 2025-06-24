@@ -54,3 +54,4 @@ jobs:
             -Dsonar.sources=src
             -Dsonar.tests=tests
             -Dsonar.qualitygate.wait=true
+            -Dsonar.coverage.exclusions=tests/**,vendor/**

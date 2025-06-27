@@ -13,8 +13,8 @@ function genDiff(string $firstFile, string $secondFile, string $format = 'stylis
 
     $result = match ($format) {
         'stylish' => stylishFormat($fileData1, $fileData2),
-        'plain' => '2', //plainFormat($fileData1, $fileData2),
-        'json' => '3', //jsonFormat($fileData1, $fileData2),
+        //'plain' => '2', //plainFormat($fileData1, $fileData2),
+        //'json' => '3', //jsonFormat($fileData1, $fileData2),
         default => throw new \Exception("Unknown format: $format"),
     };
     return $result;

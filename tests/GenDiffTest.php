@@ -59,4 +59,14 @@ class GenDiffTest extends TestCase
         $this->expectExceptionMessage("File not found");
         genDiff($file1, $file2);
     }
+
+    public function testFormatNotFound(): void
+    {
+        $file1 = $this->getFixtureFullPath('file1.json');
+        $file2 = $this->getFixtureFullPath('file2.json');
+
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage("Unknown format");
+        genDiff($file1, $file2, 'not_exists_format');
+    }
 }

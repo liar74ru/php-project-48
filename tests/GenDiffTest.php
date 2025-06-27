@@ -53,7 +53,7 @@ class GenDiffTest extends TestCase
     public function testFileNotFound(): void
     {
         $file1 = $this->getFixtureFullPath('file1.json');
-        $file2 = $this->getFixtureFullPath('not_exists.json');
+        $file2 = __DIR__ . '/fixtures/not_exists.json';
 
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage("File not found");

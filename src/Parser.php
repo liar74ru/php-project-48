@@ -1,7 +1,6 @@
 <?php
-namespace Php\Package;
 
-require_once __DIR__ . '/../vendor/autoload.php';
+namespace Php\Package;
 
 use Symfony\Component\Yaml\Yaml;
 

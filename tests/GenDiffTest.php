@@ -11,23 +11,23 @@ class GenDiffTest extends TestCase
     private string $expected;
 
     protected function setUp(): void
-{
-    $expectedPath = $this->getFixtureFullPath('expected.txt');
-    $expected = file_get_contents($expectedPath);
-    if ($expected === false) {
-        throw new \Exception("Cannot read expected.txt");
+    {
+        $expectedPath = $this->getFixtureFullPath('expected.txt');
+        $expected = file_get_contents($expectedPath);
+        if ($expected === false) {
+            throw new \Exception("Cannot read expected.txt");
+        }
+        $this->expected = $expected;
     }
-    $this->expected = $expected;
-}
 
     public function getFixtureFullPath(string $fixtureName): string
     {
         $parts = [__DIR__, 'fixtures', $fixtureName];
         $path = realpath(implode('/', $parts));
         if ($path === false) {
-        throw new \Exception("Fixture not found: $fixtureName");
-    }
-    return $path;
+            throw new \Exception("Fixture not found: $fixtureName");
+        }
+        return $path;
     }
 
     public function testFlatJsonDiff(): void
@@ -40,7 +40,7 @@ class GenDiffTest extends TestCase
         );
     }
 
-        public function testFlatYamlDiff(): void
+    public function testFlatYamlDiff(): void
     {
         $file1 = $this->getFixtureFullPath('file1.yml');
         $file2 = $this->getFixtureFullPath('file2.yml');

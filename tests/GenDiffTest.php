@@ -1,34 +1,50 @@
 <?php
 
+namespace Php\Package\Tests;
+
 use PHPUnit\Framework\TestCase;
+
 use function Php\Package\genDiff;
 
 class GenDiffTest extends TestCase
 {
-    public function testFlatJsonDiff()
+    private string $expected;
+
+    protected function setUp(): void
     {
-        $file1 = __DIR__ . '/fixtures/file1.json';
-        $file2 = __DIR__ . '/fixtures/file2.json';
-        $expected = <<<EOT
-{
-  - follow: false
-    host: hexlet.io
-  - proxy: 123.234.53.22
-  - timeout: 50
-  + timeout: 20
-  + verbose: true
-}\n
-EOT;
+        $this->expected = file_get_contents($this->getFixtureFullPath('expected.txt'));
+    }
+
+    public function getFixtureFullPath(string $fixtureName): string|false
+    {
+        $parts = [__DIR__, 'fixtures', $fixtureName];
+        return realpath(implode('/', $parts));
+    }
+
+    public function testFlatJsonDiff(): void
+    {
+        $file1 = $this->getFixtureFullPath('file1.json');
+        $file2 = $this->getFixtureFullPath('file2.json');
         $this->assertEquals(
-            str_replace(["\r\n", "\r"], "\n", $expected),
-            str_replace(["\r\n", "\r"], "\n", genDiff($file1, $file2))
+            trim(str_replace(["\r\n", "\r"], "\n", $this->expected)),
+            trim(str_replace(["\r\n", "\r"], "\n", genDiff($file1, $file2, 'stylish')))
         );
     }
-    
-    public function testFileNotFound()
+
+        public function testFlatYamlDiff(): void
     {
-        $file1 = __DIR__ . '/fixtures/file1.json';
-        $file2 = __DIR__ . '/fixtures/not_exists.json';
+        $file1 = $this->getFixtureFullPath('file1.yml');
+        $file2 = $this->getFixtureFullPath('file2.yml');
+        $this->assertEquals(
+            trim(str_replace(["\r\n", "\r"], "\n", $this->expected)),
+            trim(str_replace(["\r\n", "\r"], "\n", genDiff($file1, $file2)))
+        );
+    }
+
+    public function testFileNotFound(): void
+    {
+        $file1 = $this->getFixtureFullPath('file1.json');
+        $file2 = $this->getFixtureFullPath('not_exists.json');
 
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage("File not found");

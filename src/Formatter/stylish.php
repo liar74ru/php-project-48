@@ -2,14 +2,8 @@
 
 namespace Php\Package;
 
-function parseJson(string $filePath): array
-{
-    $fileContent = file_get_contents($filePath);
-
-    $parsedData = json_decode($fileContent, true);
-
-    return $parsedData;
-}
+use function Php\Package\parseJson;
+use function Php\Package\parseYml;
 
 function diff(array $firstData, array $secondData): array
 {
@@ -36,12 +30,9 @@ function diff(array $firstData, array $secondData): array
     return $diff;
 }
 
-function genDiff($firstFile, $secondFile): string
+function stylishFormat(array $firstFile, array $secondFile): string
 {
-    if (!file_exists($firstFile) || !file_exists($secondFile)) {
-        throw new \Exception("File not found: " . $firstFile . " or " . $secondFile);
-    }
-    $values = diff(parseJson($firstFile), parseJson($secondFile));
+    $values = diff($firstFile, $secondFile);
     $result = "{\n";
     foreach ($values as $key => $value) {
         if (is_bool($value)) {
@@ -50,5 +41,6 @@ function genDiff($firstFile, $secondFile): string
         $result .= "  $key: $value\n";
     }
     $result .= "}\n";
+
     return $result;
 }

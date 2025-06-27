@@ -29,3 +29,7 @@ CLI-инструмент для сравнения JSON-файлов.
 ## Демонстрация после 4 шага
 
 [![asciicast](https://asciinema.org/a/iBiPVHLDxXnUNdbyShAxkR48j.svg)](https://asciinema.org/a/iBiPVHLDxXnUNdbyShAxkR48j)
+
+## Демонстрация после 6 шага
+
+[![asciicast](https://asciinema.org/a/ffUVpt3LGrEOtvnfw2Xb5p5wI.svg)](https://asciinema.org/a/ffUVpt3LGrEOtvnfw2Xb5p5wI)

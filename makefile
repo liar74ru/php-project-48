@@ -10,10 +10,13 @@ dump: # создание дампа базы данных
 	composer dump-autoload
 
 lint: # проверка кода на коректность
-	composer exec --verbose phpcs -- --standard=PSR12 src bin
+	composer exec --verbose phpcs -- --standard=PSR12 src bin tests
 
 lint-fix: # исправление ошибок в коде
-	composer exec --verbose phpcbf -- --standard=PSR12 src bin
+	composer exec --verbose phpcbf -- --standard=PSR12 src bin tests
+
+stan: # запуск PHPStan для статического анализа кода
+	./vendor/bin/phpstan analyse -c phpstan.neon
 
 gendiff: # установить gendiff
 	sudo ln -sf "$(pwd)/bin/gendiff" /usr/local/bin/gendiff

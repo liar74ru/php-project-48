@@ -5,42 +5,38 @@ namespace Php\Package;
 use function Php\Package\parseJson;
 use function Php\Package\parseYml;
 
-function diff(array $firstData, array $secondData): array
-{
-    $diff = [];
-    $keys = array_unique(array_merge(array_keys($firstData), array_keys($secondData)));
-    sort($keys);
+const TEXT_INDEX = [
+    'added' => '+ ',
+    'deleted' => '- ',
+    'unchanged' => '  ',
+    'nested' => '  ',
+    'addedNested' => '+ ',
+    'deletedNested' => '- ',
+];
 
-    foreach ($keys as $key) {
-        if (array_key_exists($key, $firstData)) {
-            if (array_key_exists($key, $secondData)) {
-                if ($firstData[$key] !== $secondData[$key]) {
-                    $diff["- $key"] = $firstData[$key];
-                    $diff["+ $key"] = $secondData[$key];
-                } else {
-                    $diff["  $key"] = $firstData[$key];
-                }
-            } else {
-                    $diff["- $key"] = $firstData[$key];
-            }
-        } elseif (array_key_exists($key, $secondData)) {
-            $diff["+ $key"] = $secondData[$key];
-        }
-    }
-    return $diff;
+function toString(string $value): string
+{
+    return trim(var_export($value, true), "'");
 }
 
-function stylishFormat(array $firstFile, array $secondFile): string
+function stylishFormat(array $diff, int $spacesCount = 2, int $depth = 1): string
 {
-    $values = diff($firstFile, $secondFile);
+    // Diff-структура
     $result = "{\n";
-    foreach ($values as $key => $value) {
-        if (is_bool($value)) {
-            $value = $value ? 'true' : 'false';
+    $step = str_repeat(' ', $spacesCount * $depth);
+    $aStep = str_repeat(' ', $spacesCount * ($depth - 1));
+    foreach ($diff as [$status, $key, $value]) {
+        if ($status === 'nested' || $status === 'addedNested' || $status === 'deletedNested') {
+            $nestedValue = stylishFormat($value, $spacesCount, $depth + 2);
+            $result .= $step . TEXT_INDEX[$status] . "$key: $nestedValue\n";
+            continue;
         }
-        $result .= "  $key: $value\n";
+        $value = is_array($value)
+        ? stylishFormat($value, $spacesCount, $depth + 2)
+        : (is_bool($value) ? ($value ? 'true' : 'false')
+        : ($value === null ? 'null' : toString((string)$value)));
+        $result .= $step . TEXT_INDEX[$status] . "$key: $value\n";
     }
-    $result .= "}\n";
-
+    $result .= $aStep . "}";
     return $result;
 }

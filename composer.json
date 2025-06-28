@@ -10,6 +10,7 @@
             "src/GenDiff.php",
             "src/Parser.php",
             "src/GetFileData.php",
+            "src/Diff.php",
             "src/Formatter/stylish.php"
         ]
     },

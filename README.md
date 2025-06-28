@@ -33,3 +33,7 @@ CLI-инструмент для сравнения JSON-файлов.
 ## Демонстрация после 6 шага
 
 [![asciicast](https://asciinema.org/a/ffUVpt3LGrEOtvnfw2Xb5p5wI.svg)](https://asciinema.org/a/ffUVpt3LGrEOtvnfw2Xb5p5wI)
+
+## Демонстрация после 7 шага
+
+[![asciicast](https://asciinema.org/a/lv3ORtfuHh3E9UDWWqfierQYS.svg)](https://asciinema.org/a/lv3ORtfuHh3E9UDWWqfierQYS)

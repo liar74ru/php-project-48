@@ -2,12 +2,11 @@
 
 namespace Php\Package;
 
-use function Php\Package\parseJson;
-use function Php\Package\parseYml;
-
 const TEXT_INDEX = [
     'added' => '+ ',
     'deleted' => '- ',
+    'updateDeleted' => '- ',
+    'updateAdded' => '+ ',
     'unchanged' => '  ',
     'nested' => '  ',
     'addedNested' => '+ ',

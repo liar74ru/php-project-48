@@ -20,8 +20,12 @@ function diff(array $firstData, array $secondData): array
                 $nestedDiff = diff($firstValue, $secondValue);
                 $diff[] = ['nested', $key, $nestedDiff];
             } elseif ($firstValue !== $secondValue) {
-                $diff[] = ['deleted', $key, is_array($firstValue) ? diff($firstValue, $firstValue) : $firstValue];
-                $diff[] = ['added', $key, is_array($secondValue) ? diff($secondValue, $secondValue) : $secondValue];
+                $diff[] = ['updateDeleted', $key, is_array($firstValue)
+                        ? diff($firstValue, $firstValue)
+                        : $firstValue];
+                $diff[] = ['updateAdded', $key, is_array($secondValue)
+                        ? diff($secondValue, $secondValue)
+                        : $secondValue];
             } else {
                 $diff[] = ['unchanged', $key, $firstValue];
             }

@@ -9,6 +9,7 @@ use function Php\Package\genDiff;
 class GenDiffTest extends TestCase
 {
     private string $expected;
+    private string $plainExpected;
 
     protected function setUp(): void
     {
@@ -18,7 +19,15 @@ class GenDiffTest extends TestCase
             throw new \Exception("Cannot read expected.txt");
         }
         $this->expected = $expected;
+
+        $plainExpectedPath = $this->getFixtureFullPath('plain-expected.txt');
+        $plainExpected = file_get_contents($plainExpectedPath);
+        if ($plainExpected === false) {
+            throw new \Exception("Cannot read plain-expected.txt");
+        }
+        $this->plainExpected = $plainExpected;
     }
+
 
     public function getFixtureFullPath(string $fixtureName): string
     {
@@ -38,6 +47,10 @@ class GenDiffTest extends TestCase
             trim(str_replace(["\r\n", "\r"], "\n", $this->expected)),
             trim(str_replace(["\r\n", "\r"], "\n", genDiff($file1, $file2, 'stylish')))
         );
+        $this->assertEquals(
+            trim(str_replace(["\r\n", "\r"], "\n", $this->plainExpected)),
+            trim(str_replace(["\r\n", "\r"], "\n", genDiff($file1, $file2, 'plain')))
+        );
     }
 
     public function testFlatYamlDiff(): void
@@ -47,6 +60,10 @@ class GenDiffTest extends TestCase
         $this->assertEquals(
             trim(str_replace(["\r\n", "\r"], "\n", $this->expected)),
             trim(str_replace(["\r\n", "\r"], "\n", genDiff($file1, $file2)))
+        );
+        $this->assertEquals(
+            trim(str_replace(["\r\n", "\r"], "\n", $this->plainExpected)),
+            trim(str_replace(["\r\n", "\r"], "\n", genDiff($file1, $file2, 'plain')))
         );
     }
 

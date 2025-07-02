@@ -1,4 +1,5 @@
 # Makefile
+
 install: # установить зависимости
 	composer install
 	chmod +x bin/gendiff
@@ -19,7 +20,7 @@ stan: # запуск PHPStan для статического анализа ко
 	./vendor/bin/phpstan analyse -c phpstan.neon
 
 gendiff: # установить gendiff
-	sudo ln -sf "$(pwd)/bin/gendiff" /usr/local/bin/gendiff
+	./bin/gendiff
 
 test: # запуск тестов
 	vendor/bin/phpunit --coverage-html coverage-report

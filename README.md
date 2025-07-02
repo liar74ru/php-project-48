@@ -27,7 +27,7 @@
 ## Пример использования
 
 ```bash
-gendiff --format plain file1.json file2.json
+./bin/gendiff --format plain file1.json file2.json
 ```
 
 ## Демонстрация после 4 шага

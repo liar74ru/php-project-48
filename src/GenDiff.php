@@ -13,6 +13,6 @@ function genDiff(string $firstFile, string $secondFile, string $format = 'stylis
     $fileData2 = parser(getFileData($secondFile));
     $values = diff($fileData1, $fileData2);
     $result = formatter($values, $format);
-    
+
     return $result;
 }

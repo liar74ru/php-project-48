@@ -10,4 +10,3 @@ build
 coverage.xml
 /coverage-report/
 clover.xml
-phpunit.result.cache

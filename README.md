@@ -1,4 +1,5 @@
 ### Hexlet tests and linter status:
+[![hexlet-check](https://github.com/liar74ru/php-project-48/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/liar74ru/php-project-48/actions/workflows/hexlet-check.yml)
 [![Actions Status](https://github.com/liar74ru/php-project-48/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/liar74ru/php-project-48/actions)
 [![CI](https://github.com/liar74ru/php-project-48/actions/workflows/ci.yml/badge.svg)](https://github.com/liar74ru/php-project-48/actions/workflows/ci.yml)
 [![SonarQube Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=liar74ru_php-project-48&metric=alert_status)](https://sonarcloud.io/dashboard?id=liar74ru_php-project-48)

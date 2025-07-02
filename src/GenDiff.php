@@ -1,6 +1,6 @@
 <?php
 
-namespace Php\Package;
+namespace Differ\Differ;
 
 use function Php\Package\parser;
 use function Php\Package\formatter;
@@ -12,7 +12,7 @@ function genDiff(string $firstFile, string $secondFile, string $format = 'stylis
     $fileData1 = parser(getFileData($firstFile));
     $fileData2 = parser(getFileData($secondFile));
     $values = diff($fileData1, $fileData2);
-
     $result = formatter($values, $format);
+    
     return $result;
 }

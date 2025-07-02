@@ -19,9 +19,6 @@ lint-fix: # исправление ошибок в коде
 stan: # запуск PHPStan для статического анализа кода
 	./vendor/bin/phpstan analyse -c phpstan.neon
 
-gendiff: # установить gendiff
-	./bin/gendiff
-
 test: # запуск тестов
 	vendor/bin/phpunit --coverage-html coverage-report
 

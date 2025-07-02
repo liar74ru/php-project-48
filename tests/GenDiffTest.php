@@ -34,7 +34,6 @@ class GenDiffTest extends TestCase
             throw new \Exception("Cannot read json-expected.txt");
         }
         $this->jsonExpected = $jsonExpected;
-
     }
 
 

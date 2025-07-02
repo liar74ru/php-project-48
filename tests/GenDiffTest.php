@@ -10,6 +10,7 @@ class GenDiffTest extends TestCase
 {
     private string $expected;
     private string $plainExpected;
+    private string $jsonExpected;
 
     protected function setUp(): void
     {
@@ -26,6 +27,14 @@ class GenDiffTest extends TestCase
             throw new \Exception("Cannot read plain-expected.txt");
         }
         $this->plainExpected = $plainExpected;
+
+        $jsonExpectedPath = $this->getFixtureFullPath('json-expected.txt');
+        $jsonExpected = file_get_contents($jsonExpectedPath);
+        if ($jsonExpected === false) {
+            throw new \Exception("Cannot read json-expected.txt");
+        }
+        $this->jsonExpected = $jsonExpected;
+
     }
 
 
@@ -51,6 +60,10 @@ class GenDiffTest extends TestCase
             trim(str_replace(["\r\n", "\r"], "\n", $this->plainExpected)),
             trim(str_replace(["\r\n", "\r"], "\n", genDiff($file1, $file2, 'plain')))
         );
+        $this->assertEquals(
+            trim(str_replace(["\r\n", "\r"], "\n", $this->jsonExpected)),
+            trim(str_replace(["\r\n", "\r"], "\n", genDiff($file1, $file2, 'json')))
+        );
     }
 
     public function testFlatYamlDiff(): void
@@ -64,6 +77,10 @@ class GenDiffTest extends TestCase
         $this->assertEquals(
             trim(str_replace(["\r\n", "\r"], "\n", $this->plainExpected)),
             trim(str_replace(["\r\n", "\r"], "\n", genDiff($file1, $file2, 'plain')))
+        );
+        $this->assertEquals(
+            trim(str_replace(["\r\n", "\r"], "\n", $this->jsonExpected)),
+            trim(str_replace(["\r\n", "\r"], "\n", genDiff($file1, $file2, 'json')))
         );
     }
 

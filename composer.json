@@ -13,7 +13,8 @@
             "src/Diff.php",
             "src/Formatter.php",
             "src/Formatter/Stylish.php",
-            "src/Formatter/Plain.php"
+            "src/Formatter/Plain.php",
+            "src/Formatter/Json.php"
         ]
     },
     "type": "library",

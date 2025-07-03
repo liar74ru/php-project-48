@@ -2,11 +2,19 @@
 
 namespace Php\Package;
 
+function sortedKeys(array $firstData, array $secondData): array
+{
+    $keys = array_unique(array_merge(array_keys($firstData), array_keys($secondData)));
+    $sorted = $keys;
+    // Вместо sort возвращаем новый отсортированный массив
+    usort($sorted, 'strcmp');
+    return $sorted;
+}
+
 function diff(array $firstData, array $secondData): array
 {
     $diff = [];
-    $keys = array_unique(array_merge(array_keys($firstData), array_keys($secondData)));
-    sort($keys);
+    $keys = sortedKeys($firstData, $secondData);
 
     foreach ($keys as $key) {
         $inFirst = array_key_exists($key, $firstData);

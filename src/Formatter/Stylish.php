@@ -2,7 +2,7 @@
 
 namespace Php\Package;
 
-const TEXT_INDEX = [
+const STATUS_TEXT_INDEX = [
     'added' => '+ ',
     'deleted' => '- ',
     'updateDeleted' => '- ',
@@ -27,14 +27,14 @@ function stylishFormat(array $diff, int $spacesCount = 2, int $depth = 1): strin
     foreach ($diff as [$status, $key, $value]) {
         if ($status === 'nested' || $status === 'addedNested' || $status === 'deletedNested') {
             $nestedValue = stylishFormat($value, $spacesCount, $depth + 2);
-            $result .= $step . TEXT_INDEX[$status] . "$key: $nestedValue\n";
+            $result .= $step . STATUS_TEXT_INDEX[$status] . "$key: $nestedValue\n";
             continue;
         }
         $value = is_array($value)
         ? stylishFormat($value, $spacesCount, $depth + 2)
         : (is_bool($value) ? ($value ? 'true' : 'false')
         : ($value === null ? 'null' : toString((string)$value)));
-        $result .= $step . TEXT_INDEX[$status] . "$key: $value\n";
+        $result .= $step . STATUS_TEXT_INDEX[$status] . "$key: $value\n";
     }
     $result .= $aStep . "}";
     return $result;

@@ -13,37 +13,44 @@ const STATUS_DELETED_NESTED = 'deletedNested';
 
 function plainFormat(array $diff, string $parent = ''): string
 {
-    $lines = [];
-    $updateDeletedHandled = '';
-    foreach ($diff as [$status, $key, $value]) {
-        $fullKey = $parent === '' ? $key : "$parent.$key";
-        switch ($status) {
-            case STATUS_ADDED:
-                $lines[] = "Property '$fullKey' was added with value: " . formatValue($value);
-                break;
-            case STATUS_DELETED:
-                $lines[] = "Property '$fullKey' was removed";
-                break;
-            case STATUS_UPDATE_ADDED:
-                $lines[] = "Property '$fullKey' was updated. From $updateDeletedHandled to " . formatValue($value);
-                break;
-            case STATUS_UPDATE_DELETED:
-                $updateDeletedHandled = formatValue($value);
-                break;
-            case STATUS_NESTED:
-                $lines[] = plainFormat($value, $fullKey);
-                break;
-            case STATUS_ADDED_NESTED:
-                $lines[] = "Property '$fullKey' was added with value: [complex value]";
-                break;
-            case STATUS_DELETED_NESTED:
-                $lines[] = "Property '$fullKey' was removed";
-                break;
-            case STATUS_UNCHANGED:
-                break;
-        }
-    }
-    return implode("\n", $lines);
+    $result = array_reduce(
+        $diff,
+        function ($carry, $item) use ($parent) {
+            [$status, $key, $value] = $item;
+            $fullKey = $parent === '' ? $key : "$parent.$key";
+
+            switch ($status) {
+                case STATUS_ADDED:
+                    $carry['lines'] .= "Property '$fullKey' was added with value: " . formatValue($value) . "\n";
+                    break;
+                case STATUS_DELETED:
+                    $carry['lines'] .= "Property '$fullKey' was removed" . "\n";
+                    break;
+                case STATUS_UPDATE_ADDED:
+                    $carry['lines'] .= "Property '$fullKey' was updated. From {$carry['lastDeleted']} to "
+                        . formatValue($value) . "\n";
+                    $carry['lastDeleted'] = '';
+                    break;
+                case STATUS_UPDATE_DELETED:
+                    $carry['lastDeleted'] = formatValue($value);
+                    break;
+                case STATUS_NESTED:
+                    $carry['lines'] .= plainFormat($value, $fullKey);
+                    break;
+                case STATUS_ADDED_NESTED:
+                    $carry['lines'] .= "Property '$fullKey' was added with value: [complex value]" . "\n";
+                    break;
+                case STATUS_DELETED_NESTED:
+                    $carry['lines'] .= "Property '$fullKey' was removed" . "\n";
+                    break;
+                case STATUS_UNCHANGED:
+                    break;
+            }
+            return $carry;
+        },
+        ['lines' => '', 'lastDeleted' => '']
+    );
+    return $result['lines'];
 }
 
 function formatValue(string|array|bool|null|int|float $value): string

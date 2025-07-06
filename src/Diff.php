@@ -4,6 +4,21 @@ namespace Php\Package;
 
 use function Funct\Collection\sortBy;
 
+function unchanged(array $data): array
+{
+    return array_map(
+        function ($value, $key) {
+            return [
+                is_array($value) ? 'nested' : 'unchanged',
+                $key,
+                is_array($value) ? unchanged($value) : $value
+            ];
+        },
+        $data,
+        array_keys($data)
+    );
+}
+
 function diff(array $firstData, array $secondData): array
 {
     $keys = array_unique(array_merge(array_keys($firstData), array_keys($secondData)));
@@ -25,24 +40,25 @@ function diff(array $firstData, array $secondData): array
                     ],
                     $firstData[$key] !== $secondData[$key] => [
                         ['updateDeleted', $key, is_array($firstData[$key])
-                            ? diff($firstData[$key], $firstData[$key])
+                            ? unchanged($firstData[$key])
                             : $firstData[$key]],
                         ['updateAdded', $key, is_array($secondData[$key])
-                            ? diff($secondData[$key], $secondData[$key])
+                            ? unchanged($secondData[$key])
                             : $secondData[$key]]
                     ],
                     default => [['unchanged', $key, $firstData[$key]]]
                 },
                 [true, false] => [
                     is_array($firstData[$key])
-                        ? ['deletedNested', $key, diff($firstData[$key], $firstData[$key])]
+                        ? ['deletedNested', $key, unchanged($firstData[$key])]
                         : ['deleted', $key, $firstData[$key]]
                 ],
                 [false, true] => [
                     is_array($secondData[$key])
-                        ? ['addedNested', $key, diff($secondData[$key], $secondData[$key])]
+                        ? ['addedNested', $key, unchanged($secondData[$key])]
                         : ['added', $key, $secondData[$key]]
-                ]
+                ],
+                [false, false] => [] // Этот case добавлен для полноты, хотя никогда не сработает
             }
         ],
         []

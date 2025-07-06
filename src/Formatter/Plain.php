@@ -21,32 +21,46 @@ function plainFormat(array $diff, string $parent = ''): string
 
             switch ($status) {
                 case STATUS_ADDED:
-                    $carry['lines'] .= "Property '$fullKey' was added with value: " . formatValue($value) . "\n";
-                    break;
+                    return [
+                        'lines' => $carry['lines'] . "Property '$fullKey' was added with value: "
+                        . formatValue($value) . "\n",
+                        'lastDeleted' => $carry['lastDeleted'],
+                    ];
                 case STATUS_DELETED:
-                    $carry['lines'] .= "Property '$fullKey' was removed" . "\n";
-                    break;
+                    return [
+                        'lines' => $carry['lines'] . "Property '$fullKey' was removed\n",
+                        'lastDeleted' => $carry['lastDeleted'],
+                    ];
                 case STATUS_UPDATE_ADDED:
-                    $carry['lines'] .= "Property '$fullKey' was updated. From {$carry['lastDeleted']} to "
-                        . formatValue($value) . "\n";
-                    $carry['lastDeleted'] = '';
-                    break;
+                    return [
+                        'lines' => $carry['lines'] .
+                            "Property '$fullKey' was updated. From {$carry['lastDeleted']} to " .
+                            formatValue($value) . "\n",
+                        'lastDeleted' => '',
+                    ];
                 case STATUS_UPDATE_DELETED:
-                    $carry['lastDeleted'] = formatValue($value);
-                    break;
+                    return [
+                        'lines' => $carry['lines'],
+                        'lastDeleted' => formatValue($value),
+                    ];
                 case STATUS_NESTED:
-                    $carry['lines'] .= plainFormat($value, $fullKey);
-                    break;
+                    return [
+                        'lines' => $carry['lines'] . plainFormat($value, $fullKey),
+                        'lastDeleted' => $carry['lastDeleted'],
+                    ];
                 case STATUS_ADDED_NESTED:
-                    $carry['lines'] .= "Property '$fullKey' was added with value: [complex value]" . "\n";
-                    break;
+                    return [
+                        'lines' => $carry['lines'] . "Property '$fullKey' was added with value: [complex value]\n",
+                        'lastDeleted' => $carry['lastDeleted'],
+                    ];
                 case STATUS_DELETED_NESTED:
-                    $carry['lines'] .= "Property '$fullKey' was removed" . "\n";
-                    break;
+                    return [
+                        'lines' => $carry['lines'] . "Property '$fullKey' was removed\n",
+                        'lastDeleted' => $carry['lastDeleted'],
+                    ];
                 case STATUS_UNCHANGED:
-                    break;
+                    return $carry;
             }
-            return $carry;
         },
         ['lines' => '', 'lastDeleted' => '']
     );

@@ -37,7 +37,7 @@ function stylishFormat(array $diff, int $spacesCount = 2, int $depth = 1): strin
     return $iter($diff, $depth);
 }
 
-function formatValuePlain(string|array|bool|null|int|float $value): string
+function formatValuePlain(string|bool|null|int|float $value): string
 {
     if (is_string($value)) {
         return $value;
@@ -48,5 +48,5 @@ function formatValuePlain(string|array|bool|null|int|float $value): string
     if ($value === null) {
         return 'null';
     }
-    return $value;
+    return (string)$value;
 }

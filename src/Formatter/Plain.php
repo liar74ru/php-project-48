@@ -1,6 +1,6 @@
 <?php
 
-namespace Php\Package;
+namespace Differ\Formatter\Plain;
 
 const STATUS_ADDED = 'added';
 const STATUS_DELETED = 'deleted';

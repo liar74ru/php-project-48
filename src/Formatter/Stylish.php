@@ -1,6 +1,6 @@
 <?php
 
-namespace Php\Package;
+namespace Differ\Formatter\Stylish;
 
 const STATUS_TEXT_INDEX = [
     'added' => '+ ',

@@ -25,8 +25,12 @@ $response = $handler->handle($doc);
 
 
 // Если пользователь запросил help или version
-if ($response['--help'] || $response['--version']) {
+if ($response['--help']) {
     echo $doc;
+    exit;
+}
+if ($response['--version']) {
+    echo "gendiff version 1.0.0\n";
     exit;
 }
 // Если пользователь не указал оба файла

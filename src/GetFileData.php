@@ -1,6 +1,6 @@
 <?php
 
-namespace Php\Package;
+namespace Differ\GetFileData;
 
 function getFileData(string $filePath): array
 {

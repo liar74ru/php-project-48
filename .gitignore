@@ -1,6 +1,8 @@
 /vendor/
 /coverage-report/
 clover.xml
+coverage.xml
+composer.lock
 
 # PHPStan
 phpstan.neon
@@ -9,6 +11,7 @@ phpstan-result-cache.php
 
 # PHPUnit
 .phpunit.cache/
+.phpunit.result.cache
 phpunit.xml
 phpunit.xml.dist
 

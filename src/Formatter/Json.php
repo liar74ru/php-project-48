@@ -1,6 +1,6 @@
 <?php
 
-namespace Php\Package;
+namespace Differ\Formatter\Json;
 
 function jsonFormat(array $diff): string
 {

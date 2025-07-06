@@ -1,6 +1,6 @@
 <?php
 
-namespace Php\Package;
+namespace Differ\Parser;
 
 use Symfony\Component\Yaml\Yaml;
 

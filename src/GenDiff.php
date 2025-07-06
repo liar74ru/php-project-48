@@ -2,10 +2,10 @@
 
 namespace Differ\Differ;
 
-use function Php\Package\parser;
-use function Php\Package\formatter;
-use function Php\Package\getFileData;
-use function Php\Package\diff;
+use function Differ\Parser\parser;
+use function Differ\Formatter\formatter;
+use function Differ\GetFileData\getFileData;
+use function Differ\Diff\diff;
 
 function genDiff(string $firstFile, string $secondFile, string $format = 'stylish'): string
 {

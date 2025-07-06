@@ -2,21 +2,14 @@
 
 namespace Php\Package;
 
-function sortedKeys(array $firstData, array $secondData): array
-{
-    $keys = array_unique(array_merge(array_keys($firstData), array_keys($secondData)));
-    $sorted = $keys;
-    // Вместо sort возвращаем новый отсортированный массив
-    usort($sorted, 'strcmp');
-    return $sorted;
-}
+use function Funct\Collection\sortBy;
 
 function diff(array $firstData, array $secondData): array
 {
-    $diff = [];
-    $keys = sortedKeys($firstData, $secondData);
+    $keys = array_unique(array_merge(array_keys($firstData), array_keys($secondData)));
+    $sortedKeys = sortBy($keys, fn($key) => $key);
 
-    foreach ($keys as $key) {
+    return array_reduce($sortedKeys, function ($diff, $key) use ($firstData, $secondData) {
         $inFirst = array_key_exists($key, $firstData);
         $inSecond = array_key_exists($key, $secondData);
 
@@ -29,11 +22,11 @@ function diff(array $firstData, array $secondData): array
                 $diff[] = ['nested', $key, $nestedDiff];
             } elseif ($firstValue !== $secondValue) {
                 $diff[] = ['updateDeleted', $key, is_array($firstValue)
-                        ? diff($firstValue, $firstValue)
-                        : $firstValue];
+                    ? diff($firstValue, $firstValue)
+                    : $firstValue];
                 $diff[] = ['updateAdded', $key, is_array($secondValue)
-                        ? diff($secondValue, $secondValue)
-                        : $secondValue];
+                    ? diff($secondValue, $secondValue)
+                    : $secondValue];
             } else {
                 $diff[] = ['unchanged', $key, $firstValue];
             }
@@ -52,7 +45,7 @@ function diff(array $firstData, array $secondData): array
                 $diff[] = ['added', $key, $value];
             }
         }
-    }
 
-    return $diff;
+        return $diff;
+    }, []);
 }

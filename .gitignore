@@ -1,12 +1,18 @@
 /vendor/
-.idea
-.DS_Store
-.vscode
-logs
-*.swo
-*.swp
-*.cache
-build
-coverage.xml
 /coverage-report/
 clover.xml
+
+# PHPStan
+phpstan.neon
+phpstan.neon.dist
+phpstan-result-cache.php
+
+# PHPUnit
+.phpunit.cache/
+phpunit.xml
+phpunit.xml.dist
+
+# User-specific
+*.local
+.env
+.env.*

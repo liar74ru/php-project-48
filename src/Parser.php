@@ -6,7 +6,6 @@ use Symfony\Component\Yaml\Yaml;
 
 function parser(array $filePath): array
 {
-
     return match ($filePath['extension']) {
         'json' => parseJson($filePath['fileContent']),
         'yml', 'yaml' => parseYml($filePath['fileContent']),
@@ -16,15 +15,10 @@ function parser(array $filePath): array
 
 function parseJson(string $fileContent): array
 {
-
-    $parsedData = json_decode($fileContent, true);
-
-    return $parsedData;
+    return json_decode($fileContent, true);
 }
 
 function parseYml(string $fileContent): array
 {
-    $parsedData = Yaml::parse($fileContent);
-
-    return $parsedData;
+    return Yaml::parse($fileContent);
 }
